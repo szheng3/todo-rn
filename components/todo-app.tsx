@@ -84,77 +84,84 @@ export function TodoApp() {
   };
 
   return (
-    <Box className={`flex-1 ${isDark ? "bg-gray-900" : "bg-gray-50"}`}>
-      <VStack
-        className={`${isSmallScreen ? "w-full" : "w-[600px]"} mx-auto h-full`}
-        space="md"
-      >
-        <HStack className="justify-between items-center p-4" space="md">
-          <Text
-            className={`text-2xl font-bold ${
-              isDark ? "text-white" : "text-gray-800"
-            }`}
-          >
-            My Todo List
-          </Text>
-          <Button
-            variant="outline"
-            size="sm"
-            onPress={toggleColorScheme}
-            className="rounded-full"
-          >
-            <Text>{isDark ? "🌞" : "🌙"}</Text>
-          </Button>
-        </HStack>
-
-        <HStack className="px-4 mb-4" space="sm">
-          <Input
-            size="md"
-            variant="outline"
-            className={`flex-1 mr-4 ${isDark ? "text-white" : "text-gray-800"}`}
-          >
-            <InputField
-              value={newTodo}
-              onChangeText={setNewTodo}
-              onSubmitEditing={addTodo}
-              placeholder="Add a new todo..."
-              returnKeyType="done"
-            />
-          </Input>
-          <Button onPress={addTodo} className="bg-blue-500 active:bg-blue-600">
-            <Plus size={20} color="white" />
-          </Button>
-        </HStack>
-
-        <FlatList
-          data={todos}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <TodoItem
-              id={item.id}
-              text={item.text}
-              completed={item.completed}
-              onToggle={toggleTodo}
-              onDelete={deleteTodo}
-              isDark={isDark}
-            />
-          )}
-          ListEmptyComponent={
+    <Box className={`flex-1 ${isDark ? "bg-gray-900" : "bg-gray-50"} `}>
+      <SafeAreaView className="flex-1">
+        <VStack
+          className={`${isSmallScreen ? "w-full" : "w-[600px]"} mx-auto h-full`}
+          space="md"
+        >
+          <HStack className="justify-between items-center p-4" space="md">
             <Text
-              className={`text-center ${
-                isDark ? "text-gray-400" : "text-gray-500"
-              } mt-4`}
+              className={`text-2xl font-bold ${
+                isDark ? "text-white" : "text-gray-800"
+              }`}
             >
-              No todos yet. Add one to get started!
+              My Todo List
             </Text>
-          }
-          contentContainerStyle={{
-            gap: 8,
-            padding: 16,
-          }}
-          className="mb-16"
-        />
-      </VStack>
+            <Button
+              variant="outline"
+              size="sm"
+              onPress={toggleColorScheme}
+              className="rounded-full"
+            >
+              <Text>{isDark ? "🌞" : "🌙"}</Text>
+            </Button>
+          </HStack>
+
+          <HStack className="px-4 mb-4" space="sm">
+            <Input
+              size="md"
+              variant="outline"
+              className={`flex-1 mr-4 ${
+                isDark ? "text-white" : "text-gray-800"
+              }`}
+            >
+              <InputField
+                value={newTodo}
+                onChangeText={setNewTodo}
+                onSubmitEditing={addTodo}
+                placeholder="Add a new todo..."
+                returnKeyType="done"
+              />
+            </Input>
+            <Button
+              onPress={addTodo}
+              className="bg-blue-500 active:bg-blue-600"
+            >
+              <Plus size={20} color="white" />
+            </Button>
+          </HStack>
+
+          <FlatList
+            data={todos}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <TodoItem
+                id={item.id}
+                text={item.text}
+                completed={item.completed}
+                onToggle={toggleTodo}
+                onDelete={deleteTodo}
+                isDark={isDark}
+              />
+            )}
+            ListEmptyComponent={
+              <Text
+                className={`text-center ${
+                  isDark ? "text-gray-400" : "text-gray-500"
+                } mt-4`}
+              >
+                No todos yet. Add one to get started!
+              </Text>
+            }
+            contentContainerStyle={{
+              gap: 8,
+              padding: 16,
+            }}
+            className="mb-16"
+          />
+        </VStack>
+      </SafeAreaView>
     </Box>
   );
 }
