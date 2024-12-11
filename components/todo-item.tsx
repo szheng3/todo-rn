@@ -3,12 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Check, Trash2 } from "lucide-react-native";
 import { Text } from "react-native";
 import { Pressable } from "react-native";
-import Animated, {
-  FadeInRight,
-  FadeOutLeft,
-  Layout,
-  FadingTransition,
-} from "react-native-reanimated";
+import Animated, { FadeInRight, FadeOutLeft } from "react-native-reanimated";
 
 interface TodoItemProps {
   id: string;
@@ -28,11 +23,7 @@ export function TodoItem({
   isDark,
 }: TodoItemProps) {
   return (
-    <Animated.View
-      entering={FadeInRight}
-      exiting={FadeOutLeft}
-      layout={FadingTransition}
-    >
+    <Animated.View entering={FadeInRight} exiting={FadeOutLeft}>
       <Pressable onPress={() => onToggle(id)}>
         <Box
           className={`flex-row items-center justify-between p-4 rounded-lg ${

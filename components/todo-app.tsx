@@ -133,7 +133,7 @@ export function TodoApp() {
             </Button>
           </HStack>
 
-          <Animated.FlatList
+          <FlatList
             data={todos}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
