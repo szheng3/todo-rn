@@ -12,6 +12,7 @@ import { useWindowDimensions } from "react-native";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { VStack } from "./ui/vstack";
 import { HStack } from "./ui/hstack";
+import Animated, { Layout } from "react-native-reanimated";
 
 interface Todo {
   id: string;
@@ -132,7 +133,7 @@ export function TodoApp() {
             </Button>
           </HStack>
 
-          <FlatList
+          <Animated.FlatList
             data={todos}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
