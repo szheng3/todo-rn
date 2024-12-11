@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Check, Trash2 } from "lucide-react-native";
 import { Text } from "react-native";
 import { Pressable } from "react-native";
+import { Icon } from "./ui/icon";
 
 interface TodoItemProps {
   id: string;
@@ -39,7 +40,7 @@ export function TodoItem({
             )}
           </Box>
           <Text
-            className={`text-lg flex-1 ${
+            className={`ml-2 text-lg flex-1 ${
               completed
                 ? "line-through text-white"
                 : isDark
@@ -52,7 +53,7 @@ export function TodoItem({
           </Text>
         </Box>
         <Button
-          variant="outline"
+          variant="link"
           size="sm"
           onPress={() => onDelete(id)}
           className="ml-2"

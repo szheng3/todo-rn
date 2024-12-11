@@ -4,12 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Input, InputField } from "@/components/ui/input";
 import { TodoItem } from "./todo-item";
 import { Plus } from "lucide-react-native";
-import { useColorScheme } from "nativewind";
-import { FlatList, Platform } from "react-native";
+import { FlatList } from "react-native";
 import { Text } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useWindowDimensions } from "react-native";
+import { useColorScheme } from "@/hooks/useColorScheme";
+import { VStack } from "./ui/vstack";
+import { HStack } from "./ui/hstack";
 
 interface Todo {
   id: string;
@@ -20,7 +22,9 @@ interface Todo {
 export function TodoApp() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState("");
-  const { colorScheme, toggleColorScheme } = useColorScheme();
+  const [colorScheme, setColorScheme] = useState<"light" | "dark">(
+    useColorScheme() ?? "light"
+  );
   const { width } = useWindowDimensions();
 
   const isDark = colorScheme === "dark";
@@ -75,12 +79,17 @@ export function TodoApp() {
     saveTodos(updatedTodos);
   };
 
+  const toggleColorScheme = () => {
+    setColorScheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
+
   return (
-    <Box
-      className={`flex-1 ${isDark ? "bg-gray-900" : "bg-gray-50"} px-4 pt-4`}
-    >
-      <Box className={`${isSmallScreen ? "w-full" : "w-[600px]"} mx-auto`}>
-        <Box className="flex-row justify-between items-center mb-6">
+    <Box className={`flex-1 ${isDark ? "bg-gray-900" : "bg-gray-50"}`}>
+      <VStack
+        className={`${isSmallScreen ? "w-full" : "w-[600px]"} mx-auto h-full`}
+        space="md"
+      >
+        <HStack className="justify-between items-center p-4" space="md">
           <Text
             className={`text-2xl font-bold ${
               isDark ? "text-white" : "text-gray-800"
@@ -96,13 +105,13 @@ export function TodoApp() {
           >
             <Text>{isDark ? "🌞" : "🌙"}</Text>
           </Button>
-        </Box>
+        </HStack>
 
-        <Box className="flex-row space-x-2 mb-6">
+        <HStack className="px-4 mb-4" space="sm">
           <Input
             size="md"
             variant="outline"
-            className={`flex-1 ${isDark ? "text-white" : "text-gray-800"}`}
+            className={`flex-1 mr-4 ${isDark ? "text-white" : "text-gray-800"}`}
           >
             <InputField
               value={newTodo}
@@ -115,7 +124,7 @@ export function TodoApp() {
           <Button onPress={addTodo} className="bg-blue-500 active:bg-blue-600">
             <Plus size={20} color="white" />
           </Button>
-        </Box>
+        </HStack>
 
         <FlatList
           data={todos}
@@ -139,9 +148,13 @@ export function TodoApp() {
               No todos yet. Add one to get started!
             </Text>
           }
-          contentContainerStyle={{ gap: 8 }}
+          contentContainerStyle={{
+            gap: 8,
+            padding: 16,
+          }}
+          className="mb-16"
         />
-      </Box>
+      </VStack>
     </Box>
   );
 }
