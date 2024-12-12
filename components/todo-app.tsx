@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Box } from "@/components/ui/box";
 import { Button } from "@/components/ui/button";
 import { Input, InputField } from "@/components/ui/input";
@@ -6,78 +6,30 @@ import { TodoItem } from "./todo-item";
 import { Plus } from "lucide-react-native";
 import { FlatList } from "react-native";
 import { Text } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useWindowDimensions } from "react-native";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { VStack } from "./ui/vstack";
 import { HStack } from "./ui/hstack";
-import Animated, { Layout } from "react-native-reanimated";
-
-interface Todo {
-  id: string;
-  text: string;
-  completed: boolean;
-}
+import { useTodoStore } from "@/store/todo-store";
 
 export function TodoApp() {
-  const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState("");
   const [colorScheme, setColorScheme] = useState<"light" | "dark">(
     useColorScheme() ?? "light"
   );
   const { width } = useWindowDimensions();
 
+  const { todos, addTodo, toggleTodo, deleteTodo } = useTodoStore();
+
   const isDark = colorScheme === "dark";
   const isSmallScreen = width < 768;
 
-  useEffect(() => {
-    loadTodos();
-  }, []);
-
-  const loadTodos = async () => {
-    try {
-      const savedTodos = await AsyncStorage.getItem("todos");
-      if (savedTodos) {
-        setTodos(JSON.parse(savedTodos));
-      }
-    } catch (error) {
-      console.error("Error loading todos:", error);
-    }
-  };
-
-  const saveTodos = async (updatedTodos: Todo[]) => {
-    try {
-      await AsyncStorage.setItem("todos", JSON.stringify(updatedTodos));
-    } catch (error) {
-      console.error("Error saving todos:", error);
-    }
-  };
-
-  const addTodo = () => {
+  const handleAddTodo = () => {
     if (newTodo.trim() !== "") {
-      const updatedTodos = [
-        ...todos,
-        { id: Date.now().toString(), text: newTodo, completed: false },
-      ];
-      setTodos(updatedTodos);
-      saveTodos(updatedTodos);
+      addTodo(newTodo);
       setNewTodo("");
     }
-  };
-
-  const toggleTodo = (id: string) => {
-    const updatedTodos = todos.map((todo) =>
-      todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    );
-    setTodos(updatedTodos);
-    saveTodos(updatedTodos);
-  };
-
-  const deleteTodo = (id: string) => {
-    const updatedTodos = todos.filter((todo) => todo.id !== id);
-    setTodos(updatedTodos);
-    saveTodos(updatedTodos);
   };
 
   const toggleColorScheme = () => {
@@ -120,13 +72,13 @@ export function TodoApp() {
               <InputField
                 value={newTodo}
                 onChangeText={setNewTodo}
-                onSubmitEditing={addTodo}
+                onSubmitEditing={handleAddTodo}
                 placeholder="Add a new todo..."
                 returnKeyType="done"
               />
             </Input>
             <Button
-              onPress={addTodo}
+              onPress={handleAddTodo}
               className="bg-blue-500 active:bg-blue-600"
             >
               <Plus size={20} color="white" />
