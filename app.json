@@ -9,13 +9,18 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.todo",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "This app requires microphone access for speech transcription"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.todo"
     },
     "web": {
       "bundler": "metro",
@@ -24,6 +29,7 @@
     },
     "plugins": [
       "expo-router",
+      "expo-av",
       [
         "expo-splash-screen",
         {
